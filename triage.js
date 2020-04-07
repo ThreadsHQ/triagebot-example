@@ -40,10 +40,10 @@ function getRequest(settings, message) {
   let reactions = (message.reactions || []).map(r => r.name);
   let addressed = settings.addressed.emojis.some(e => reactions.includes(e.replace(/:/g, '')));
   let review = settings.review.emojis.some(e => reactions.includes(e.replace(/:/g, ''))) && !addressed;
-  let pending = message.bot && !review && !addressed;
+  let bot = message.subtype === 'bot_message';                // bot posts
+  let pending = bot && !review && !addressed;
 
   let id = message.ts.replace('.', '');                       // deep link id
-  let bot = message.subtype === 'bot_message';                // bot posts
   let priority = settings.pending.emojis.indexOf(emoji);      // display order
 
   return { bot, priority, emoji, review, addressed, pending, id, message };
