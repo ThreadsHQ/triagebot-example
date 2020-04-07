@@ -40,7 +40,7 @@ function getRequest(settings, message) {
   let reactions = (message.reactions || []).map(r => r.name);
   let addressed = settings.addressed.emojis.some(e => reactions.includes(e.replace(/:/g, '')));
   let review = settings.review.emojis.some(e => reactions.includes(e.replace(/:/g, ''))) && !addressed;
-  let pending = emoji && !review && !addressed;
+  let pending = message.bot && !review && !addressed;
 
   let id = message.ts.replace('.', '');                       // deep link id
   let bot = message.subtype === 'bot_message';                // bot posts
@@ -73,7 +73,7 @@ function buildMessage(payload, requests, settings) {
   let addressed_emojis = settings.addressed.emojis.join(', ');
   let help_text = [
     "I look at the last 1000 messages posted in this channel.",
-    "I'll only review messages that have one of these reacji - {{pending_emojis}}.",
+    "I'll only review messages from the Threads integration.",
     "If a message has one of these reacji - {{review_emojis}} -  it's in progress.",
     "If it has one of these reacji - {{addressed_emojis}} - it's done. Otherwise it's still pending."
   ]
